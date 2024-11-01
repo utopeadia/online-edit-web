@@ -16,7 +16,12 @@ import { Header } from '@/components/edit/header';
 import CodeEditor from '@/components/editor';
 import { DragIcon } from '@/components/file/dragIcon';
 import { TerminalPanel } from '@/components/terminal';
-import { useActiveModelStore, useModelsStore, useSplitStore } from '@/store/editorStore';
+import {
+  useActiveModelStore,
+  useModelsStore,
+  useSplitStore,
+  useEditorStore,
+} from '@/store/editorStore';
 import { useDragIconStore } from '@/store/dragIconStore';
 import { useUploadFileDataStore } from '@/store/uploadFileDataStore';
 import { addNewModel } from '@/utils';
@@ -50,6 +55,7 @@ const Page: React.FC<{ children: React.ReactNode; params: any }> = ({ children, 
   const { splitState, removeSplit, addSplit } = useSplitStore();
 
   const controls = useAnimation();
+  const { getEditor } = useEditorStore();
 
   const { models, setModels, removeAllModel } = useModelsStore();
 
@@ -60,11 +66,14 @@ const Page: React.FC<{ children: React.ReactNode; params: any }> = ({ children, 
   const { initFileData, clearFileData } = useUploadFileDataStore();
 
   useEffect(() => {
-    initFileData(params.projectId);
-    window.addEventListener('beforeunload', (event) => {
+    const handleClearFileData = (event: BeforeUnloadEvent) => {
       event?.preventDefault();
       clearFileData(true, params.projectId);
-    });
+    };
+
+    addSplit();
+    initFileData(params.projectId);
+    window.addEventListener('beforeunload', handleClearFileData);
 
     return () => {
       removeAllModel(0);
@@ -73,11 +82,20 @@ const Page: React.FC<{ children: React.ReactNode; params: any }> = ({ children, 
       clearActiveModel(0);
       clearActiveModel(1);
       clearActiveModel(2);
+      removeSplit(0);
       removeSplit(1);
       removeSplit(2);
-      removeSplit(0);
-      addSplit();
       clearFileData(true, params.projectId);
+
+      const editorArr = getEditor(null);
+
+      if (editorArr) {
+        (editorArr as Array<null | editor.IStandaloneCodeEditor>).forEach((editor) => {
+          editor && editor.dispose();
+        });
+      }
+
+      window.removeEventListener('beforeunload', handleClearFileData);
     };
   }, [params.projectId, initFileData]);
   useEffect(() => {
@@ -139,7 +157,7 @@ const Page: React.FC<{ children: React.ReactNode; params: any }> = ({ children, 
       </div>
       <div className=" w-full flex flex-1 overflow-hidden">
         {/* 侧边栏 */}
-        <div className="bg-[#2e3138] text-gray-400 w-[2.9vw] flex flex-col justify-between items-center py-4">
+        <div className="bg-[#2e3138] text-gray-400 w-[2.9vw] flex flex-col justify-between items-center py-4 z-50">
           <div className="flex flex-col items-center space-y-6">
             <Link href={`/edit/${params.projectId}/file`}>
               <FaFileAlt
@@ -208,7 +226,7 @@ const Page: React.FC<{ children: React.ReactNode; params: any }> = ({ children, 
             </Panel>
             <ResizeHandle className=" w-[3px] bg-transparent" />
             <Panel className="bg-[#202327]" minSize={1} defaultSize={35}>
-              <div className=" h-full">
+              <div className=" h-full z-[999]">
                 <Preview />
               </div>
             </Panel>

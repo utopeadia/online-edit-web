@@ -3,51 +3,63 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { FaGithub } from 'react-icons/fa';
 import { RiTwitterXFill, RiRocketLine } from 'react-icons/ri';
-import { PiAcorn } from 'react-icons/pi';
 
 import { Header } from '@/components/home/header';
 import { HoverEffect } from '@/components/home/card-hover-effect';
 import { ContainerScroll } from '@/components/home/container-scroll-animation';
 import { BackgroundBeams } from '@/components/home/background-beams';
 import { Footer } from '@/components/home/footer';
+import { UseSteps } from '@/components/home/useSteps';
 import { PROJECT_Name, PATHS } from '@/utils';
 
 const projects = [
   {
-    icon: <PiAcorn className="w-8 h-8" />,
-    title: 'title1',
-    description: 'desc1!',
-    link: '/a',
+    icon: '/react.svg',
+    title: 'React',
+    description: 'JavaScript',
+    link: PATHS.MAIN_DASHBOARD,
   },
   {
-    icon: <PiAcorn className="w-8 h-8" />,
-    title: 'title2',
-    description: 'desc2',
-    link: '/b',
+    icon: '/react.svg',
+    title: 'React',
+    description: 'TypeScript',
+    link: PATHS.MAIN_DASHBOARD,
   },
   {
-    icon: <PiAcorn className="w-8 h-8" />,
-    title: 'title3',
-    description: 'desc3',
-    link: '/c',
+    icon: '/vue.svg',
+    title: 'Vue',
+    description: 'JavaScript',
+    link: PATHS.MAIN_DASHBOARD,
   },
   {
-    icon: <PiAcorn className="w-8 h-8" />,
-    title: 'title4',
-    description: 'desc4',
-    link: '/d',
+    icon: '/vue.svg',
+    title: 'Vue',
+    description: 'TypeScript',
+    link: PATHS.MAIN_DASHBOARD,
   },
   {
-    icon: <PiAcorn className="w-8 h-8" />,
-    title: 'title5',
-    description: 'desc5',
-    link: '/e',
+    icon: '/preact.svg',
+    title: 'Preact',
+    description: 'JavaScript',
+    link: PATHS.MAIN_DASHBOARD,
   },
   {
-    icon: <PiAcorn className="w-8 h-8" />,
-    title: 'title6',
-    description: 'desc6',
-    link: '/f',
+    icon: '/preact.svg',
+    title: 'Preact',
+    description: 'TypeScript',
+    link: PATHS.MAIN_DASHBOARD,
+  },
+  {
+    icon: '/node.svg',
+    title: 'Vanilla',
+    description: 'JavaScript',
+    link: PATHS.MAIN_DASHBOARD,
+  },
+  {
+    icon: '/node.svg',
+    title: 'Vanilla',
+    description: 'TypeScript',
+    link: PATHS.MAIN_DASHBOARD,
   },
 ];
 
@@ -58,17 +70,17 @@ const socialIcons = [
   },
   {
     icon: <RiTwitterXFill className="w-6 h-6" />,
-    link: 'https://github.com/xun082/online-edit-web111',
+    link: 'https://github.com/xun082/online-edit-web',
   },
 ];
 
 const router = [
   {
-    title: 'page1',
-    link: '/a',
+    title: 'Docs',
+    link: '/a1',
   },
   {
-    title: 'page2',
+    title: 'Blog',
     link: '/b',
   },
 ];
@@ -78,8 +90,8 @@ const Home: NextPage = () => {
     <Link href={PATHS.MAIN_DASHBOARD}>
       <button className="relative inline-block p-px text-base font-semibold leading-6 text-white no-underline rounded-full shadow-2xl cursor-pointer bg-slate-800 group shadow-zinc-900 overflow-hidden">
         <span className="absolute top-0 left-0 w-full h-1 bg-[image:linear-gradient(to_right,#0c002b,#1779ff)] animate-snakeBorderTop delay-1000"></span>
-        <span className="absolute top-0 right-0 w-1 h-full bg-[image:linear-gradient(to_bottom,#0c002b,#1779ff)] animate-snakeBorderLeft "></span>
-        <span className="absolute bottom-0 left-0 w-full h-1 bg-[image:linear-gradient(to_left,#0c002b,#1779ff)] animate-snakeBorderBottom "></span>
+        <span className="absolute top-0 right-0 w-1 h-full bg-[image:linear-gradient(to_bottom,#0c002b,#1779ff)] animate-snakeBorderLeft"></span>
+        <span className="absolute bottom-0 left-0 w-full h-1 bg-[image:linear-gradient(to_left,#0c002b,#1779ff)] animate-snakeBorderBottom"></span>
         <span className="absolute top-0 left-0 w-1 h-full bg-[image:linear-gradient(to_top,#0c002b,#1779ff)] animate-snakeBorderRight delay-1000"></span>
         <div className="relative z-10 flex items-center px-6 py-2 space-x-2 rounded-full bg-zinc-950 ring-1 ring-white/10">
           <span>Get started</span>
@@ -112,7 +124,7 @@ const Home: NextPage = () => {
                     '0 2px 15px -3px var(--next-devtools-widget-shadow), 0 4px 6px -4px var(--next-devtools-widget-shadow)',
                 }}
               >
-                <img alt="preview" className="object-contain" src="/images/preview.png" />
+                <img alt="preview" className="object-contain" src="/images/home.png" />
               </div>
             }
             titleComponent={
@@ -131,13 +143,21 @@ const Home: NextPage = () => {
         </header>
 
         <main className="container mt-12 mx-auto bg-[#111111]">
+          <h3 className="text-white mx-auto text-center text-3xl">
+            Boot a shareable environment in <strong className="text-[#1779ff]">milliseconds</strong>
+          </h3>
           <HoverEffect items={projects} />
         </main>
-
+        <section className="container relative mx-auto mb-20 space-y-6">
+          <hr className="border-t border-gray-300 h-px top-[-1em] absolute w-full border-dashed" />
+          <div className="flex ">
+            <UseSteps />
+          </div>
+        </section>
         <div className="container mx-auto mt-20 mb-20 space-y-6">
           <div className="text-center">{getStartedButton}</div>
         </div>
-        <Footer />
+        <Footer icons={socialIcons} />
       </div>
     </>
   );

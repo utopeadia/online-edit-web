@@ -8,6 +8,18 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['shiki'],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
+    ],
+  },
   async headers() {
     return [
       {
@@ -20,6 +32,15 @@ const nextConfig = {
           {
             key: 'Cross-Origin-Opener-Policy',
             value: 'same-origin',
+          },
+        ],
+      },
+      {
+        source: '/cooperation/:slug*',
+        headers: [
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'unsafe-none',
           },
         ],
       },
